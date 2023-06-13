@@ -3,8 +3,16 @@ const route = express.Router()
 const auth = require("../controller/auth");
 const services = require('../services/render');
 const controller = require('../controller/controller');
+const connectEnsureLogin = require('connect-ensure-login'); //authorization
 
+route.post('/auth/logout', (req, res) => {
+    console.log('11111');
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
 
+    });
+})
 route.post('/auth/login', auth.login);
 route.post('/auth/register', auth.register);
 /**
@@ -13,7 +21,7 @@ route.post('/auth/register', auth.register);
  */
 route.get('/', services.homeRoutes);
 
-route.get('/table', services.table);
+route.get('/table', connectEnsureLogin.ensureLoggedIn('/'), services.table);
 route.get('/register', services.register);
 
 /**

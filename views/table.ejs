@@ -2,6 +2,34 @@
 <%- include('include/_header') %>
     <!-- /include header -->
 
+    <script>
+        function logout() {
+            console.log('inside logou func');
+            fetch('/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('inside onclick');
+                    // Handle the response from the server
+                    if (response.ok) {
+                        console.log('response ok');
+
+                        // Redirect or perform any other action after successful logout
+                        window.location.href = '/'; // Replace with your actual redirect route
+                    } else {
+                        // Handle error response
+                        console.log('Logout request failed');
+                    }
+                })
+                .catch(error => {
+                    // Handle network or fetch error
+                    console.log('Logout request failed:', error);
+                });
+        }
+    </script>
 
     <!-- Main Site -->
     <main id="site-main">
@@ -33,6 +61,9 @@
                     </tbody>
                 </table>
             </form>
+            <div class="form-group">
+                <button type="Logout" class="logout" onclick="logout()">Logout</button>
+            </div>
 
         </div>
     </main>

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const connectEnsureLogin = require('connect-ensure-login'); //authorization
 
 
 exports.homeRoutes = (req, res) => {
@@ -22,6 +23,7 @@ exports.add_user = (req, res) => {
 }
 
 exports.table = (req, res) => {
+    console.log("fetching tables here")
     axios.get('http://localhost:3050/api/users')
         .then(function(response) {
             res.render('table', { users: response.data });
