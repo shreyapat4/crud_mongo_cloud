@@ -9,8 +9,8 @@ route.post('/auth/logout', (req, res) => {
     console.log('11111');
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/');
-
+        console.log("testing");
+        res.redirect('/register');
     });
 })
 route.post('/auth/login', auth.login);
@@ -29,8 +29,6 @@ route.get('/register', services.register);
  *  @method GET /add-user
  */
 route.get('/add-user', services.add_user)
-
-// route.get('/login-page', services.login_page)
 
 /**
  *  @description for update user

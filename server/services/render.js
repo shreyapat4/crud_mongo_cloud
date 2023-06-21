@@ -4,7 +4,7 @@ const connectEnsureLogin = require('connect-ensure-login'); //authorization
 
 exports.homeRoutes = (req, res) => {
     // Make a get request to /api/users
-    axios.get('http://localhost:3050/api/users')
+    axios.get(`${process.env.callbackUri}api/users`)
         .then(function(response) {
             res.render('index', { users: response.data });
         })
@@ -24,7 +24,7 @@ exports.add_user = (req, res) => {
 
 exports.table = (req, res) => {
     console.log("fetching tables here")
-    axios.get('http://localhost:3050/api/users')
+    axios.get(`${process.env.callbackUri}api/users`)
         .then(function(response) {
             res.render('table', { users: response.data });
         })
@@ -37,8 +37,12 @@ exports.login_page = (req, res) => {
     res.render('login_page');
 }
 
+exports.logout_page = (req, res) => {
+    res.render('logout_page');
+}
+
 exports.update_user = (req, res) => {
-    axios.get('http://localhost:3050/api/users', { params: { id: req.query.id } })
+    axios.get(`${process.env.callbackUri}api/users`, { params: { id: req.query.id } })
         .then(function(userdata) {
             res.render("update_user", { user: userdata.data })
         })

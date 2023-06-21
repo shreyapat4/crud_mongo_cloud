@@ -8,14 +8,15 @@ const path = require('path');
 const connectDB = require('./server/database/connection');
 const connectEnsureLogin = require('connect-ensure-login'); //authorization
 
-// const { register, login } = require("./server/controller/auth.js");
+dotenv.config({ path: 'config.env' })
+
+const passportAuth = require("./server/controller/passport_auth")
+
 const User = require('./server/model/User'); // User Model
 
 const app = express();
 
-// app.post("/auth/register", register);
 
-dotenv.config({ path: 'config.env' })
 const PORT = process.env.PORT || 8080
 
 // log requests
@@ -31,36 +32,21 @@ app.use(session({
     cookie: { maxAge: 60 * 60 * 1000 } // 1 hour
 }));
 
-// parse request to body-parser
 app.use(bodyparser.urlencoded({ extended: true }))
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(User.createStrategy());
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+app.use(passportAuth.passport.initialize());
+app.use(passportAuth.passport.session());
+app.get("/", passportAuth.passport.authenticate("provider", { successRedirect: "/table", failureRedirect: "/login" }));
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id)
-});
 
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    })
-});
 // set view engine
 app.set("view engine", "ejs")
-    // app.set("views", path.resolve(__dirname, "views/ejs"))
 
 // load assets
 app.use('/css', express.static(path.resolve(__dirname, "assets/css")))
 app.use('/img', express.static(path.resolve(__dirname, "assets/img")))
 app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
-
-
-
 // load routers
 app.use('/', require('./server/routes/router'))
 
-app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
+app.listen(PORT, () => { console.log(`Server is running on ${process.env.callbackUri}`) });

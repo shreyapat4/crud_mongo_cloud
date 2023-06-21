@@ -13,19 +13,17 @@
                 })
                 .then(response => {
                     console.log('inside onclick');
-                    // Handle the response from the server
+    
                     if (response.ok) {
                         console.log('response ok');
-
-                        // Redirect or perform any other action after successful logout
-                        window.location.href = '/'; // Replace with your actual redirect route
+                        window.location.href = '/'; 
                     } else {
-                        // Handle error response
+                    
                         console.log('Logout request failed');
                     }
                 })
                 .catch(error => {
-                    // Handle network or fetch error
+                   
                     console.log('Logout request failed:', error);
                 });
         }
@@ -38,9 +36,6 @@
                 <a href="/add-user" class="border-shadow">
                     <span class="text-gradient">New User <i class="fas fa-user"></i></span>
                 </a>
-                <!-- <a href="/login-page" class="border-shadow">
-                <span class="text-gradient">Login <i class="fas fa-user"></i></span>
-            </a> -->
             </div>
 
             <!-- form handling -->
